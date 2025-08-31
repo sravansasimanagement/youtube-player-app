@@ -53,17 +53,17 @@ git clone https://github.com/YOUR_USERNAME/youtube-video-app.git
 cd youtube-video-app
 
 
-2. Install Dependencies
-bash
-Copy
-Edit
-npm install
-3. Start the App
-Run the project with Expo:
+### 1. 2. Install Dependencies
+```bash
 
-For Mobile (Expo Go app):
-bash
-Copy
-Edit
+npm install
+
+
+###  3. Start the App
+
+
+### Run the project with Expo:
+
+
 npx expo start
 
