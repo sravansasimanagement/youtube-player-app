@@ -1,5 +1,8 @@
+// 
+
+// HomeScreen.tsx
 import React, { useState } from 'react';
-import { View, StyleSheet, SafeAreaView, TextInput, Button } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import YouTubePlayerComponent from '../components/YouTubePlayerComponent';
@@ -11,10 +14,21 @@ type Props = {
 };
 
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
+  const [savedUrl, setSavedUrl] = useState<string | null>(null);
+  const [position, setPosition] = useState(0);
+  const [playing, setPlaying] = useState(true);
 
   return (
     <View style={styles.container}>
-      <YouTubePlayerComponent onPress={() => navigation.navigate('Edit')} />
+      <YouTubePlayerComponent
+        savedUrl={savedUrl}
+        setSavedUrl={setSavedUrl}
+        position={position}
+        setPosition={setPosition}
+        playing={playing}
+        setPlaying={setPlaying}
+        onPress={() => navigation.navigate('Edit')}
+      />
     </View>
   );
 };
@@ -22,18 +36,6 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  form: {
-    padding: 20,
-    justifyContent: 'center',
-    flex: 1,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 10,
-    marginBottom: 10,
-    borderRadius: 5,
   },
 });
 
