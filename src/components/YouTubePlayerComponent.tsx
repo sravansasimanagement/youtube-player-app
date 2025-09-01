@@ -1,20 +1,42 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { View, TextInput, Button, StyleSheet, Text, Platform } from 'react-native';
-import YoutubePlayer, { PLAYER_STATES } from 'react-native-youtube-iframe';
+import YoutubePlayer, { PLAYER_STATES  } from 'react-native-youtube-iframe';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
+import type { YoutubeIframeMethods } from "react-native-youtube-iframe"; // 👈 type is here
+
+// import YoutubePlayer, { YoutubeIframeRef } from "react-native-youtube-iframe";
+
 
 
 const VIDEO_URL_KEY = 'video_url';
 const VIDEO_POSITION_KEY = 'video_position';
 const VIDEO_TIMESTAMP_KEY = 'video_timestamp';
 
-export default function YouTubePlayerComponent({ onPress }: { onPress?: () => void }) {
+export default function YouTubePlayerComponent({
+  savedUrl,
+  setSavedUrl,
+  position,
+  setPosition,
+  playing,
+  setPlaying,
+  onPress,
+}: {
+  savedUrl: string | null;
+  setSavedUrl: (url: string | null) => void;
+  position: number;
+  setPosition: (pos: number) => void;
+  playing: boolean;
+  setPlaying: (p: boolean) => void;
+  onPress?: () => void;
+}) {  
   const [url, setUrl] = useState('');
-  const [savedUrl, setSavedUrl] = useState<string | null>(null);
-  const [position, setPosition] = useState(0);
-  const [playing, setPlaying] = useState(true); 
-  const playerRef = useRef<any>(null);
+  // const [savedUrl, setSavedUrl] = useState<string | null>(null);
+  // const [position, setPosition] = useState(0);
+  // const [playing, setPlaying] = useState(true); 
+  //const playerRef = useRef<any>(null);
+  const playerRef = useRef<YoutubeIframeMethods>(null);
+
   const autoplayAttempts = useRef(0);
   const progressInterval = useRef<NodeJS.Timeout | null>(null);
   const isFocused = useIsFocused();
@@ -60,8 +82,8 @@ export default function YouTubePlayerComponent({ onPress }: { onPress?: () => vo
 
   const handleEdit = async () => {
     try {
-      setSavedUrl(null);
-      setUrl('');
+      //setSavedUrl(null);
+      //setUrl('');
       setPosition(0);
       setPlaying(false);
       if (progressInterval.current) clearInterval(progressInterval.current);
@@ -108,6 +130,8 @@ export default function YouTubePlayerComponent({ onPress }: { onPress?: () => vo
 
   const onReady = useCallback(() => {
     console.log('YouTube player ready');
+    playerRef.current?.seekTo(30, true)
+    console.log('YouTube player startttt');
     setPlaying(true); 
   }, []);
 
@@ -142,6 +166,7 @@ export default function YouTubePlayerComponent({ onPress }: { onPress?: () => vo
           startProgressTracking();
           break;
       }
+      
     },
     [startProgressTracking, stopProgressTracking]
   );
